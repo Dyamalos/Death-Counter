@@ -1,0 +1,6 @@
+[G]ravity,123412345
+[T]rap,4253
+[E]nemy,0
+[B]oss,0
+[S]omething Stupid,1023
+total,123417621
