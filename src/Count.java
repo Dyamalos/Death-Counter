@@ -9,20 +9,31 @@ import java.io.BufferedReader;
 public class Count
 {
 	
+	ArrayList<Death> deaths = new ArrayList<>();
+	
 	String game;
 	ArrayList<String> type = new ArrayList<>();
-	int[] count = new int[50];
+	//int[] count = new int[50];
 	int total;
 	
 	public Count()
 	{
 		
+		
+		
 		game = "Generic";
-		type.add("[G]ravity");
-		type.add("[T]rap");
-		type.add("[E]nemy");
-		type.add("[B]oss");
-		type.add("[S]omething Stupid");
+		deaths.add(new Death("[G]ravity", 'G'));
+		deaths.add(new Death("[T]rap", 'T'));
+		deaths.add(new Death("[E]nemy", 'E'));
+		deaths.add(new Death("[B]oss", 'B'));
+		deaths.add(new Death("[S]omething Stupid", 'S'));
+		
+		
+		//type.add("[G]ravity");
+		//type.add("[T]rap");
+		//type.add("[E]nemy");
+		//type.add("[B]oss");
+		//type.add("[S]omething Stupid");
 		
 		total = 0;
 
@@ -32,11 +43,17 @@ public class Count
 	{
 		
 		this.game = game;
-		type.add("[G]ravity");
-		type.add("[T]rap");
-		type.add("[E]nemy");
-		type.add("[B]oss");
-		type.add("[S]omething Stupid");
+		deaths.add(new Death("[G]ravity", 'G'));
+		deaths.add(new Death("[T]rap", 'T'));
+		deaths.add(new Death("[E]nemy", 'E'));
+		deaths.add(new Death("[B]oss", 'B'));
+		deaths.add(new Death("[S]omething Stupid", 'S'));
+		
+		//type.add("[G]ravity");
+		//type.add("[T]rap");
+		//type.add("[E]nemy");
+		//type.add("[B]oss");
+		//type.add("[S]omething Stupid");
 		
 		total = 0;
 
@@ -46,11 +63,17 @@ public class Count
 	{
 		
 		this.game = game;
-		type.add("[G]ravity");
-		type.add("[T]rap");
-		type.add("[E]nemy");
-		type.add("[B]oss");
-		type.add("[S]omething Stupid");
+		deaths.add(new Death("[G]ravity", 'G'));
+		deaths.add(new Death("[T]rap", 'T'));
+		deaths.add(new Death("[E]nemy", 'E'));
+		deaths.add(new Death("[B]oss", 'B'));
+		deaths.add(new Death("[S]omething Stupid", 'S'));
+		
+		//type.add("[G]ravity");
+		//type.add("[T]rap");
+		//type.add("[E]nemy");
+		//type.add("[B]oss");
+		//type.add("[S]omething Stupid");
 		
 		total = 0;
 
@@ -60,71 +83,44 @@ public class Count
 	public void addDeath(char a)
 	{
 		
-		int test = 0;
-		String death = type.get(test);
 		
-		try{
-		while (Character.toUpperCase(a) != death.charAt(1))
+		boolean success = false;
+	
+		for (Death x : deaths)
 		{
-			
-			test++;
-			if (test >= type.size())
-				//throw new ArrayOutOfBounds();
-				System.out.println("Fail\n");
-			else
-				death = type.get(test);
-			
+			if (x.getKey() == Character.toUpperCase(a))
+			{
+				x.addNumber(1);
+				total++;
+				success = true;
+			}
 		}
-		} catch (IndexOutOfBoundsException e) {}
 		
-		finally {
-		
-		if (test > type.size())
+		if (!success)
 		{
-			
-			//throw new ArrayOutOfBounds();
-			System.out.println("Invalid choice\n");
-			
-		}
-		else
-		{
-			
-			count[test]++;
-			total++;
-		
-		}
-		}
+			System.out.println("Invalid Death");
+		}		
 	
 	}
 
 	public void addDeaths(char a, int c)
 	{
 		
-		int test = 0;
-		String death = type.get(test);
-		try{
-		while (Character.toUpperCase(a) != death.charAt(1))
+		boolean success = false;
+		
+		for (Death x : deaths)
 		{
-			
-			test++;
-			if (test >= type.size())
-				//throw new ArrayOutOfBounds();
-				System.out.println("Fail\n" + a);
-			else
-				death = type.get(test);
-			
+			if (x.getKey() == Character.toUpperCase(a))
+			{
+				x.addNumber(c);
+				total = total + c;
+				success = true;
+			}
 		}
-		} finally{
-		if (test > type.size())
-			//throw new ArrayOutOfBounds();
-			System.out.println("Invalid choice\n");
-		else
+		
+		if (!success)
 		{
-			count[test]=count[test]+c;
-			total=total+c;
-			
-			System.out.println("Added " + c + " to " + death + "\n");
-		}
+			System.out.println("Invalid Death");
 		}
 		
 	
@@ -134,20 +130,10 @@ public class Count
 	
 	public void printDeaths()
 	{
-		int x = type.size();
-
-
-		System.out.println("Game: " + game);
-		for (int i = 0; i < x; i++ )
+		
+		for (Death x : deaths)
 		{
-			if (total != 0)
-			{
-				System.out.println(type.get(i) + " = " + count[i] + " " + "(" + percent(i) + "%)" );
-				
-			}
-			else
-				System.out.println(type.get(i) + " = " + count[i] + " " + "(" + 0 + "%)" );
-
+			System.out.println(x.getName() + ": " + x.getNumber() + " (" + x.percent(total) + ")");
 		}
 		
 		System.out.println();
@@ -156,33 +142,19 @@ public class Count
 		
 	}
 	
-	public float percent(int x)
-	{
-		
-				
-		if (total != 0){
-			float percentage = ((count[x]*100)/total);
-		
-			return percentage;
-		}
-		else
-			return 0;
-	}
-	
 	
 	public void save()
 	{
 		
 		try
 		{
-			int length = type.size();
 	
 			FileWriter output = new FileWriter(game + ".csv");
 		
 		
-			for (int i = 0; i < length; i++)
+			for (Death x : deaths)
 			{
-				output.write(type.get(i) + "," + count[i] + "\n");
+				output.write(x.getName() + "," + x.getNumber() + "\n");
 			}
 			
 				output.write("total," + total);
@@ -200,14 +172,13 @@ public class Count
 		
 		try
 		{
-			int length = type.size();
 	
 			FileWriter output = new FileWriter(game + ".txt");
 		
 		
-			for (int i = 0; i < length; i++)
+			for (Death x : deaths)
 			{
-				output.write(type.get(i) + "," + count[i] + "\n");
+				output.write(x.getName() + "," + x.getNumber() + "\n");
 			}
 			
 				output.write("total," + total);

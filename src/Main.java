@@ -15,6 +15,7 @@ public class Main
 		//create local variables for menu choice and manual add
 		char choice;
 		int number;
+		String input;
 		
 		//setup menu
 		boolean start=true;
@@ -55,7 +56,13 @@ public class Main
 			//print deaths, menu, ask for choice
 			count.printDeaths();
 			System.out.print("Chose a death (X to E[x]it, M to set [M]anually): ");
-			choice = input().charAt(0);
+			input = input();
+					
+					
+			if (input != null)
+			{
+			
+			choice = input.charAt(0);
 			
 			
 			try
@@ -96,9 +103,14 @@ public class Main
 			count.savetxt();
 			
 		}
-		
+			else
+			{
+				System.out.println("No choice selected\n");
+			}
+		}
 		//save to csv for future auto recovery of values
 		count.save();
+		
 		
 	}
 	
@@ -126,7 +138,7 @@ public class Main
 		
 		else
 		
-			return "0";
+			return null;
 	}
 		
 	
