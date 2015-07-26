@@ -19,6 +19,7 @@ public class Count
 	long timeSinceLast = 0;
 	long totalDeathTime = 0;
 	boolean newInst = true;
+	int session = 0;
 	
 	public Count()
 	{
@@ -31,6 +32,7 @@ public class Count
 		deaths.add(new Death("[E]nemy", 'E'));
 		deaths.add(new Death("[B]oss", 'B'));
 		deaths.add(new Death("[S]omething Stupid", 'S'));
+		
 		
 		
 		//type.add("[G]ravity");
@@ -58,7 +60,7 @@ public class Count
 		//type.add("[E]nemy");
 		//type.add("[B]oss");
 		//type.add("[S]omething Stupid");
-		
+		session = 1;
 		total = 0;
 
 	}
@@ -78,7 +80,7 @@ public class Count
 		//type.add("[E]nemy");
 		//type.add("[B]oss");
 		//type.add("[S]omething Stupid");
-		
+		session = 1;
 		total = 0;
 
 		loadcsv(filename);
@@ -144,7 +146,7 @@ public class Count
 		System.out.println();
 		System.out.println("Total deaths = " + total + "\n" + 
 						   "Time since last Death: " + printTime(timeSinceLast));
-		if (total != 0) System.out.println("Average Death Time: " + printTime(totalDeathTime/total));
+		if ((total - session) != 0) System.out.println("Average Death Time: " + printTime(totalDeathTime/(total - session)));
 		System.out.println();
 		
 	}
@@ -165,7 +167,8 @@ public class Count
 			}
 			
 				output.write("total," + total + "\n");
-				output.write("time," + totalDeathTime);
+				output.write("time," + totalDeathTime + "\n");
+				output.write("session," + session);
 				output.close();
 			}
 		catch (IOException e)
@@ -227,11 +230,16 @@ public class Count
 					div = line.split(",");
 					
 					
-					if (!div[0].equalsIgnoreCase("Total"))						
+					if (!div[0].equalsIgnoreCase("Total") && !div[0].equalsIgnoreCase("time") && !div[0].equalsIgnoreCase("session"))						
 						addDeaths(div[0].charAt(1), Integer.parseInt(div[1]));
 					if (div[0].equalsIgnoreCase("time"))
 						totalDeathTime = Long.parseLong(div[1]);
-					
+					if (div[0].equalsIgnoreCase("session"))
+					{
+						session = Integer.parseInt(div[1]) + 1;
+						System.out.println("Loaded session: " + div[1] + "\nStarting sesson: " + session);
+						
+					}
 					
 				}
 			}catch (IOException e){
