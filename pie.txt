@@ -1,0 +1,7 @@
+[G]ravity,399
+[T]rap,0
+[E]nemy,0
+[B]oss,0
+[S]omething Stupid,0
+total,399
+time,0

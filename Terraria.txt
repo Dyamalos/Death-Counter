@@ -1,6 +1,7 @@
-[G]ravity,6001
+[G]ravity,1
 [T]rap,1
-[E]nemy,300
-[B]oss,0
+[E]nemy,1
+[B]oss,1
 [S]omething Stupid,0
-total,6302
+total,4
+time,25824

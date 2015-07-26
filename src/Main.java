@@ -78,7 +78,8 @@ public class Main
 				else if (Character.toUpperCase(choice) == 'M')
 				{
 				
-					System.out.print("Chose type: ");
+					System.out.print("Setting mannually will not change death times\n\n"
+									+"Chose type: ");
 					choice = input().charAt(0);
 					System.out.print("Input value to add: ");
 					number = Integer.parseInt(input());

@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.io.BufferedReader;
-
+import java.util.concurrent.TimeUnit;
 
 public class Count
 {
@@ -12,9 +12,13 @@ public class Count
 	ArrayList<Death> deaths = new ArrayList<>();
 	
 	String game;
-	ArrayList<String> type = new ArrayList<>();
+	//ArrayList<String> type = new ArrayList<>();
 	//int[] count = new int[50];
 	int total;
+	long lastDeath = 0;
+	long timeSinceLast = 0;
+	long totalDeathTime = 0;
+	boolean newInst = true;
 	
 	public Count()
 	{
@@ -93,6 +97,7 @@ public class Count
 				x.addNumber(1);
 				total++;
 				success = true;
+				deathTime();
 			}
 		}
 		
@@ -137,7 +142,9 @@ public class Count
 		}
 		
 		System.out.println();
-		System.out.println("Total deaths = " + total);
+		System.out.println("Total deaths = " + total + "\n" + 
+						   "Time since last Death: " + printTime(timeSinceLast));
+		if (total != 0) System.out.println("Average Death Time: " + printTime(totalDeathTime/total));
 		System.out.println();
 		
 	}
@@ -157,7 +164,8 @@ public class Count
 				output.write(x.getName() + "," + x.getNumber() + "\n");
 			}
 			
-				output.write("total," + total);
+				output.write("total," + total + "\n");
+				output.write("time," + totalDeathTime);
 				output.close();
 			}
 		catch (IOException e)
@@ -181,7 +189,8 @@ public class Count
 				output.write(x.getName() + "," + x.getNumber() + "\n");
 			}
 			
-				output.write("total," + total);
+				output.write("total," + total + "\n");
+				output.write("time," + totalDeathTime);
 				output.close();
 			}
 		catch (IOException e)
@@ -216,8 +225,13 @@ public class Count
 				{
 					
 					div = line.split(",");
+					
+					
 					if (!div[0].equalsIgnoreCase("Total"))						
 						addDeaths(div[0].charAt(1), Integer.parseInt(div[1]));
+					if (div[0].equalsIgnoreCase("time"))
+						totalDeathTime = Long.parseLong(div[1]);
+					
 					
 				}
 			}catch (IOException e){
@@ -229,4 +243,47 @@ public class Count
 	
 	}
 	
+	private void deathTime()
+	{
+		
+		if (newInst)
+		{
+			
+			lastDeath = System.currentTimeMillis();
+			newInst = false;
+			
+		}
+		else
+		{
+			long currentTime = System.currentTimeMillis();
+			
+			
+			timeSinceLast = currentTime - lastDeath;
+			totalDeathTime = totalDeathTime + timeSinceLast;
+			lastDeath = currentTime;
+			
+		}
+		
+	}
+	
+	private String printTime(long millis)
+	{
+		
+		
+		//System.out.println(totalDeathTime);
+		
+		
+		return  String.format("%d min, %d sec", 
+			    	TimeUnit.MILLISECONDS.toMinutes(millis),
+			    	TimeUnit.MILLISECONDS.toSeconds(millis) - 
+			    	TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis))
+					);
+		
+	}
+	
+	
+	
 }
+
+	
+
