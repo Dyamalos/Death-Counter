@@ -1,8 +1,9 @@
-[G]ravity,1
-[T]rap,0
-[E]nemy,0
-[B]oss,1
-[S]omething Stupid,1
-total,3
-time,5010
-session,1
+[G]ravity,4
+[T]rap,1
+[E]nemy,3
+[B]oss,10
+[R]eading chat,3
+[S]omething Stupid,8
+total,29
+time,39127
+session,5

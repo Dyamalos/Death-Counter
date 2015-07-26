@@ -55,7 +55,7 @@ public class Main
 		
 			//print deaths, menu, ask for choice
 			count.printDeaths();
-			System.out.print("Chose a death (X to E[x]it, M to set [M]anually): ");
+			System.out.print("Choose a death (X to E[x]it, M to set [M]anually): ");
 			input = input();
 					
 					
@@ -78,8 +78,8 @@ public class Main
 				else if (Character.toUpperCase(choice) == 'M')
 				{
 				
-					System.out.print("Setting mannually will not change death times\n\n"
-									+"Chose type: ");
+					System.out.print("\nSetting mannually will not change death times or average values\n\n"
+									+"Choose type: ");
 					choice = input().charAt(0);
 					System.out.print("Input value to add: ");
 					number = Integer.parseInt(input());
@@ -103,6 +103,7 @@ public class Main
 			//save to text file in case of crash or premature app close for recovery of values.
 			count.savetxt();
 			
+			
 		}
 			else
 			{
@@ -111,6 +112,7 @@ public class Main
 		}
 		//save to csv for future auto recovery of values
 		count.save();
+		count.printExit();
 		
 		
 	}

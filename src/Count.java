@@ -20,6 +20,7 @@ public class Count
 	long totalDeathTime = 0;
 	boolean newInst = true;
 	int session = 0;
+	int sessionDeaths = 0;
 	
 	public Count()
 	{
@@ -31,6 +32,7 @@ public class Count
 		deaths.add(new Death("[T]rap", 'T'));
 		deaths.add(new Death("[E]nemy", 'E'));
 		deaths.add(new Death("[B]oss", 'B'));
+		deaths.add(new Death("[R]eading chat", 'R'));
 		deaths.add(new Death("[S]omething Stupid", 'S'));
 		
 		
@@ -53,6 +55,7 @@ public class Count
 		deaths.add(new Death("[T]rap", 'T'));
 		deaths.add(new Death("[E]nemy", 'E'));
 		deaths.add(new Death("[B]oss", 'B'));
+		deaths.add(new Death("[R]eading chat", 'R'));
 		deaths.add(new Death("[S]omething Stupid", 'S'));
 		
 		//type.add("[G]ravity");
@@ -73,6 +76,7 @@ public class Count
 		deaths.add(new Death("[T]rap", 'T'));
 		deaths.add(new Death("[E]nemy", 'E'));
 		deaths.add(new Death("[B]oss", 'B'));
+		deaths.add(new Death("[R]eading chat", 'R'));
 		deaths.add(new Death("[S]omething Stupid", 'S'));
 		
 		//type.add("[G]ravity");
@@ -98,6 +102,7 @@ public class Count
 			{
 				x.addNumber(1);
 				total++;
+				sessionDeaths++;
 				success = true;
 				deathTime();
 			}
@@ -146,9 +151,21 @@ public class Count
 		System.out.println();
 		System.out.println("Total deaths = " + total + "\n" + 
 						   "Time since last Death: " + printTime(timeSinceLast));
-		if ((total - session) != 0) System.out.println("Average Death Time: " + printTime(totalDeathTime/(total - session)));
+		if ((total - session) >= 1) System.out.println("Average Death Time: " + printTime(totalDeathTime/(total - session)));
+		printSession();
 		System.out.println();
 		
+	}
+	
+	public void printSession()
+	{
+		System.out.println("\nDeaths this session: " + sessionDeaths);
+	}
+	
+	public void printExit()
+	{
+		System.out.println("\nDeaths this session: " + sessionDeaths
+						  +"\nAverage deaths per session: " + total/session);
 	}
 	
 	
