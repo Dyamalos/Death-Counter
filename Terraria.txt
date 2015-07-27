@@ -1,7 +1,8 @@
-[G]ravity,0
-[T]rap,0
+[G]ravity,1
+[T]rap,1
 [E]nemy,3
-[B]oss,0
+[B]oss,1
+[R]eading chat,0
 [S]omething Stupid,0
-total,3
-time,142466
+total,6
+time,727661

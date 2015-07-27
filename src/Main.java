@@ -68,7 +68,7 @@ public class Main
 			try
 			{
 				//check if character is a special chioce
-				if (Character.toUpperCase(choice) != 'X' && Character.toUpperCase(choice) != 'M' && Character.toUpperCase(choice) != '0' )
+				if (Character.toUpperCase(choice) != 'X' && Character.toUpperCase(choice) != 'M' && Character.toUpperCase(choice) != '0' && choice != '-')
 				{
 					
 					count.addDeath(choice);
@@ -85,6 +85,14 @@ public class Main
 					number = Integer.parseInt(input());
 					count.addDeaths(choice,number);
 			
+				}
+				else if (choice == '-')
+				{
+					System.out.print("This will remove the last death and return to previous state, are you sure? (Y/N)");
+					choice = input().charAt(0);
+					if (Character.toUpperCase(choice) == 'Y')
+						count.remDeath();
+					
 				}
 				//if X, set menu to false
 				else

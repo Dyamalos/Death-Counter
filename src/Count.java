@@ -12,8 +12,7 @@ public class Count
 	ArrayList<Death> deaths = new ArrayList<>();
 	
 	String game;
-	//ArrayList<String> type = new ArrayList<>();
-	//int[] count = new int[50];
+	
 	int total;
 	long lastDeath = 0;
 	long timeSinceLast = 0;
@@ -22,10 +21,16 @@ public class Count
 	int session = 0;
 	int sessionDeaths = 0;
 	
+	//store previous last death time for deletion
+	long prevLastDeath = 0;
+	long prevTimeSinceLast = 0;
+	long prevTotalDeathTime = 0;
+	boolean prevNewInst;
+	Death prevDeath = null;
+	
+	
 	public Count()
 	{
-		
-		
 		
 		game = "Generic";
 		deaths.add(new Death("[G]ravity", 'G'));
@@ -34,14 +39,6 @@ public class Count
 		deaths.add(new Death("[B]oss", 'B'));
 		deaths.add(new Death("[R]eading chat", 'R'));
 		deaths.add(new Death("[S]omething Stupid", 'S'));
-		
-		
-		
-		//type.add("[G]ravity");
-		//type.add("[T]rap");
-		//type.add("[E]nemy");
-		//type.add("[B]oss");
-		//type.add("[S]omething Stupid");
 		
 		total = 0;
 
@@ -58,11 +55,6 @@ public class Count
 		deaths.add(new Death("[R]eading chat", 'R'));
 		deaths.add(new Death("[S]omething Stupid", 'S'));
 		
-		//type.add("[G]ravity");
-		//type.add("[T]rap");
-		//type.add("[E]nemy");
-		//type.add("[B]oss");
-		//type.add("[S]omething Stupid");
 		session = 1;
 		total = 0;
 
@@ -79,11 +71,6 @@ public class Count
 		deaths.add(new Death("[R]eading chat", 'R'));
 		deaths.add(new Death("[S]omething Stupid", 'S'));
 		
-		//type.add("[G]ravity");
-		//type.add("[T]rap");
-		//type.add("[E]nemy");
-		//type.add("[B]oss");
-		//type.add("[S]omething Stupid");
 		session = 1;
 		total = 0;
 
@@ -105,6 +92,7 @@ public class Count
 				sessionDeaths++;
 				success = true;
 				deathTime();
+				prevDeath = x;
 			}
 		}
 		
@@ -124,9 +112,11 @@ public class Count
 		{
 			if (x.getKey() == Character.toUpperCase(a))
 			{
+				
 				x.addNumber(c);
 				total = total + c;
 				success = true;
+
 			}
 		}
 		
@@ -140,6 +130,24 @@ public class Count
 	
 	}
 	
+	public void remDeath()
+	{
+		if (prevDeath != null)
+		{
+			sessionDeaths--;
+			total--;
+			lastDeath = prevLastDeath;
+			timeSinceLast = prevTimeSinceLast;
+			totalDeathTime = prevTotalDeathTime;
+			prevDeath.setNumber(prevDeath.getNumber() - 1);
+			prevDeath = null;
+			prevNewInst = newInst;
+			
+		}
+		else System.out.println("Failed to remove death\n");
+	}
+	
+	
 	public void printDeaths()
 	{
 		
@@ -151,7 +159,12 @@ public class Count
 		System.out.println();
 		System.out.println("Total deaths = " + total + "\n" + 
 						   "Time since last Death: " + printTime(timeSinceLast));
-		if ((total - session) >= 1) System.out.println("Average Death Time: " + printTime(totalDeathTime/(total - session)));
+		
+		if ((total - session) >= 1)
+		{
+			System.out.println("Average Death Time: " + printTime(totalDeathTime/(total - session)));
+		}
+		
 		printSession();
 		System.out.println();
 		
@@ -180,18 +193,23 @@ public class Count
 		
 			for (Death x : deaths)
 			{
+				
 				output.write(x.getName() + "," + x.getNumber() + "\n");
+				
 			}
 			
-				output.write("total," + total + "\n");
-				output.write("time," + totalDeathTime + "\n");
-				output.write("session," + session);
-				output.close();
-			}
+			output.write("total," + total + "\n");
+			output.write("time," + totalDeathTime + "\n");
+			output.write("session," + session);
+			output.close();
+				
+		}
 		catch (IOException e)
-			{ 
-				System.out.println("Failed to write file\n");
-			}
+		{ 
+			
+			System.out.println("Failed to write file\n");
+			
+		}
 		
 	}
 	
@@ -206,17 +224,22 @@ public class Count
 		
 			for (Death x : deaths)
 			{
+				
 				output.write(x.getName() + "," + x.getNumber() + "\n");
+				
 			}
 			
-				output.write("total," + total + "\n");
-				output.write("time," + totalDeathTime);
-				output.close();
-			}
+			output.write("total," + total + "\n");
+			output.write("time," + totalDeathTime);
+			output.close();
+			
+		}
 		catch (IOException e)
-			{ 
+		{ 
+			
 				System.out.println("Failed to write file\n");
-			}
+				
+		}
 		
 	}
 	
@@ -224,21 +247,28 @@ public class Count
 	{
 		FileReader input = null;
 		boolean success = false;
-		try{
+		
+		try
+		{
 			
 			input = new FileReader(game);
 			success = true;
 			
-		}catch (FileNotFoundException e)
+		}
+		catch (FileNotFoundException e)
 		{
+			
 			System.out.println("File not found: " + game);
+			
 		}
 		
 		if (success)
 		{
+			
 			BufferedReader buffer = new BufferedReader(input);
 			String line;
 			String[] div;
+			
 			try
 			{
 				while ((line = buffer.readLine()) != null)
@@ -249,10 +279,13 @@ public class Count
 					
 					if (!div[0].equalsIgnoreCase("Total") && !div[0].equalsIgnoreCase("time") && !div[0].equalsIgnoreCase("session"))						
 						addDeaths(div[0].charAt(1), Integer.parseInt(div[1]));
+					
 					if (div[0].equalsIgnoreCase("time"))
 						totalDeathTime = Long.parseLong(div[1]);
+					
 					if (div[0].equalsIgnoreCase("session"))
 					{
+						
 						session = Integer.parseInt(div[1]) + 1;
 						System.out.println("Loaded session: " + div[1] + "\nStarting sesson: " + session);
 						
@@ -271,6 +304,11 @@ public class Count
 	private void deathTime()
 	{
 		
+		prevLastDeath = lastDeath;
+		prevTimeSinceLast = timeSinceLast;
+		prevTotalDeathTime = totalDeathTime;
+		prevNewInst = newInst;
+		
 		if (newInst)
 		{
 			
@@ -280,6 +318,7 @@ public class Count
 		}
 		else
 		{
+			
 			long currentTime = System.currentTimeMillis();
 			
 			
@@ -293,9 +332,6 @@ public class Count
 	
 	private String printTime(long millis)
 	{
-		
-		
-		//System.out.println(totalDeathTime);
 		
 		
 		return  String.format("%d min, %d sec", 
