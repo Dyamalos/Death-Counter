@@ -1,0 +1,9 @@
+[G]ravity,2
+[D]rowning,0
+[T]rap,0
+[E]nemy,0
+[B]oss,0
+[R]eading chat,0
+[S]omething Stupid,0
+total,2
+time,1969

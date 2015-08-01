@@ -22,6 +22,7 @@ public class Count
 	int sessionDeaths = 0;
 	
 	//store previous last death time for deletion
+	
 	long prevLastDeath = 0;
 	long prevTimeSinceLast = 0;
 	long prevTotalDeathTime = 0;
@@ -32,16 +33,7 @@ public class Count
 	public Count()
 	{
 		
-		game = "Generic";
-		deaths.add(new Death("[G]ravity", 'G'));
-		deaths.add(new Death("[T]rap", 'T'));
-		deaths.add(new Death("[E]nemy", 'E'));
-		deaths.add(new Death("[B]oss", 'B'));
-		deaths.add(new Death("[R]eading chat", 'R'));
-		deaths.add(new Death("[S]omething Stupid", 'S'));
-		
-		total = 0;
-
+		this("Generic");
 	}
 	
 	public Count(String game)
@@ -49,6 +41,7 @@ public class Count
 		
 		this.game = game;
 		deaths.add(new Death("[G]ravity", 'G'));
+		deaths.add(new Death("[D]rowning", 'D'));
 		deaths.add(new Death("[T]rap", 'T'));
 		deaths.add(new Death("[E]nemy", 'E'));
 		deaths.add(new Death("[B]oss", 'B'));
@@ -65,6 +58,7 @@ public class Count
 		
 		this.game = game;
 		deaths.add(new Death("[G]ravity", 'G'));
+		deaths.add(new Death("[D]rowning", 'D'));
 		deaths.add(new Death("[T]rap", 'T'));
 		deaths.add(new Death("[E]nemy", 'E'));
 		deaths.add(new Death("[B]oss", 'B'));
@@ -141,7 +135,7 @@ public class Count
 			totalDeathTime = prevTotalDeathTime;
 			prevDeath.setNumber(prevDeath.getNumber() - 1);
 			prevDeath = null;
-			prevNewInst = newInst;
+			newInst = prevNewInst;
 			
 		}
 		else System.out.println("Failed to remove death\n");
